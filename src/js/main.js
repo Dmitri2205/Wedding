@@ -402,13 +402,75 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+            // «Вообще не буду пить» взаимоисключающе с остальными вариантами напитков
+            const drinkNone = document.getElementById('drinkNone');
+            const drinkCheckboxes = rsvpForm.querySelectorAll('input[name="drinks"]');
+            const setOtherDrinksDisabled = (disabled) => {
+                drinkCheckboxes.forEach((input) => {
+                    if (input !== drinkNone) {
+                        input.disabled = disabled;
+                    }
+                });
+            };
+            if (drinkNone && drinkCheckboxes.length) {
+                drinkCheckboxes.forEach((input) => {
+                    input.addEventListener('change', () => {
+                        if (input === drinkNone) {
+                            if (drinkNone.checked) {
+                                drinkCheckboxes.forEach((o) => {
+                                    if (o !== drinkNone) {
+                                        o.checked = false;
+                                    }
+                                });
+                                setOtherDrinksDisabled(true);
+                            } else {
+                                setOtherDrinksDisabled(false);
+                            }
+                        } else if (input.checked) {
+                            drinkNone.checked = false;
+                            setOtherDrinksDisabled(false);
+                        }
+                    });
+                });
+            }
+
+            const rsvpLoader = document.getElementById('rsvpFormLoader');
+            const rsvpLoaderDisabled = new Map();
+
+            const showRsvpLoader = () => {
+                if (!rsvpLoader) {
+                    return;
+                }
+                rsvpLoader.removeAttribute('hidden');
+                rsvpLoader.setAttribute('aria-hidden', 'false');
+                rsvpForm.setAttribute('aria-busy', 'true');
+                rsvpLoaderDisabled.clear();
+                rsvpForm.querySelectorAll('input, button, textarea, select').forEach((el) => {
+                    rsvpLoaderDisabled.set(el, el.disabled);
+                    el.disabled = true;
+                });
+            };
+
+            const hideRsvpLoader = () => {
+                if (!rsvpLoader) {
+                    return;
+                }
+                rsvpLoader.setAttribute('hidden', '');
+                rsvpLoader.setAttribute('aria-hidden', 'true');
+                rsvpForm.setAttribute('aria-busy', 'false');
+                rsvpLoaderDisabled.forEach((was, el) => {
+                    el.disabled = was;
+                });
+                rsvpLoaderDisabled.clear();
+            };
+
             rsvpForm.addEventListener('submit', (e) => {
                 e.preventDefault();
 
                 const submitBtn = document.getElementById('submitBtn');
                 const originalBtnText = submitBtn.innerText;
-                submitBtn.innerText = 'Отправка...';
-                submitBtn.disabled = true;
+                showRsvpLoader();
+                submitBtn.innerText = 'Отправка…';
 
                 const name = document.getElementById('guestName').value.trim();
                 const attendance = document.querySelector('input[name="attendance"]:checked').value;
@@ -465,8 +527,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     .catch(error => {
                         console.error('Ошибка при отправке в Telegram:', error);
                         alert("Произошла ошибка при отправке. Пожалуйста, проверьте настройки бота в main.js или напишите нам лично.");
+                        hideRsvpLoader();
                         submitBtn.innerText = originalBtnText;
-                        submitBtn.disabled = false;
                     });
             });
         }

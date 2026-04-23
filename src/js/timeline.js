@@ -1,4 +1,6 @@
 (function () {
+    const STROKE_ELS = 'path, line, polyline, polygon, circle, ellipse, rect';
+
     function clamp(value, min, max) {
         return Math.min(max, Math.max(min, value));
     }
@@ -11,11 +13,141 @@
             return 0;
         }
 
-        const start = viewportHeight * 0.62;
-        const end = viewportHeight * 0.18;
+        const start = viewportHeight * 0.5;
+        const end = viewportHeight * 0.3;
         const distance = Math.max(1, rect.height + start - end);
 
         return clamp((start - rect.top) / distance, 0, 1);
+    }
+
+    function getStrokeLength(el) {
+        if (typeof el.getTotalLength === 'function') {
+            const len = el.getTotalLength();
+            if (Number.isFinite(len) && len > 0) {
+                return len;
+            }
+        }
+        const tag = el.tagName && el.tagName.toLowerCase();
+        if (tag === 'circle') {
+            const r = el.r && el.r.baseVal !== undefined
+                ? el.r.baseVal.value
+                : parseFloat(el.getAttribute('r') || '0', 10);
+            if (r > 0) {
+                return 2 * Math.PI * r;
+            }
+        }
+        if (tag === 'rect') {
+            const w = parseFloat(el.getAttribute('width') || '0', 10);
+            const h = parseFloat(el.getAttribute('height') || '0', 10);
+            if (w > 0 && h > 0) {
+                return 2 * (w + h);
+            }
+        }
+        return 0;
+    }
+
+    function prepareDashesInSvg(svg) {
+        if (!svg) {
+            return;
+        }
+        svg.querySelectorAll(STROKE_ELS).forEach(function (el) {
+            const L = getStrokeLength(el);
+            if (L > 0) {
+                el.style.strokeDasharray = String(L);
+                el.style.strokeDashoffset = String(L);
+            } else {
+                el.style.removeProperty('stroke-dasharray');
+                el.style.removeProperty('stroke-dashoffset');
+            }
+        });
+    }
+
+    function lengthAtClosestY(pathEl, targetY) {
+        const total = pathEl.getTotalLength();
+        if (total <= 0 || !Number.isFinite(total)) {
+            return 0;
+        }
+        let bestS = 0;
+        let bestD = Infinity;
+        for (let s = 0; s <= total; s += 1) {
+            const p = pathEl.getPointAtLength(s);
+            const d = Math.abs(p.y - targetY);
+            if (d < bestD) {
+                bestD = d;
+                bestS = s;
+            }
+        }
+        return bestS;
+    }
+
+    function computeItemThresholds(path, items, timelineRect) {
+        const t = items.map(function (item) {
+            const desc = item.querySelector('.desc');
+            const r = (desc || item).getBoundingClientRect();
+            const y = r.top - timelineRect.top + r.height / 2;
+            return lengthAtClosestY(path, y);
+        });
+        for (let i = 1; i < t.length; i += 1) {
+            t[i] = Math.max(t[i], t[i - 1] + 0.5);
+        }
+        return t;
+    }
+
+    // Как в infinitely-drawing-icons: ~500ms, stagger i*15ms, ease out quad → power2.out
+    function runDrawAnimation(paths) {
+        if (!paths || !paths.length) {
+            return;
+        }
+        if (window.gsap) {
+            window.gsap.killTweensOf(paths);
+            window.gsap.to(paths, {
+                strokeDashoffset: 0,
+                duration: 0.5,
+                stagger: 0.015,
+                ease: 'power2.out',
+            });
+        } else {
+            paths.forEach(function (p, i) {
+                window.setTimeout(function () {
+                    p.style.strokeDashoffset = '0';
+                }, i * 15);
+            });
+        }
+    }
+
+    function revealStrokeIconInstantly(item) {
+        const svg = item.querySelector('.timeline-draw-svg');
+        if (!svg) {
+            return;
+        }
+        svg.querySelectorAll(STROKE_ELS).forEach(function (el) {
+            const L = getStrokeLength(el);
+            if (L > 0) {
+                el.style.strokeDasharray = String(L);
+                el.style.strokeDashoffset = '0';
+            }
+        });
+    }
+
+    function playIconForItem(item, preferInstant) {
+        const svg = item.querySelector('.timeline-draw-svg');
+        if (!svg) {
+            return;
+        }
+        const paths = [].filter.call(svg.querySelectorAll(STROKE_ELS), function (p) {
+            return getStrokeLength(p) > 0;
+        });
+        if (!paths.length) {
+            return;
+        }
+        if (preferInstant) {
+            if (window.gsap) {
+                window.gsap.killTweensOf(paths);
+            }
+            revealStrokeIconInstantly(item);
+        } else {
+            runDrawAnimation(paths);
+        }
     }
 
     function buildSchedulePath(items, timelineRect, width, height) {
@@ -25,12 +157,17 @@
 
         const corridorInset = clamp(width * 0.04, 14, 30);
 
-        const anchors = items.map((item, index) => {
+        const anchors = items.map(function (item, index) {
             const rect = item.getBoundingClientRect();
+            const desc = item.querySelector('.desc');
+            const descRect = desc ? desc.getBoundingClientRect() : null;
+            const box = descRect || rect;
             const isRight = index % 2 === 1;
-            const edgeX = (isRight ? rect.left : rect.right) - timelineRect.left;
+            const edgeX = (isRight ? box.left : box.right) - timelineRect.left;
             const x = isRight ? edgeX - corridorInset : edgeX + corridorInset;
-            const y = rect.top - timelineRect.top + rect.height * 0.5;
+            const y = descRect
+                ? descRect.top - timelineRect.top + descRect.height / 2
+                : rect.top - timelineRect.top + rect.height / 2;
 
             return {
                 x: clamp(x, 10, width - 10),
@@ -61,7 +198,7 @@
             y: clamp(last.y + (last.y - beforeLast.y) * endForward, 10, height - 10),
         });
 
-        const parts = [`M ${points[0].x} ${points[0].y}`];
+        const parts = ['M ' + points[0].x + ' ' + points[0].y];
         const tension = 0.92;
 
         for (let i = 0; i < points.length - 1; i += 1) {
@@ -75,7 +212,7 @@
             const cp2x = clamp(p2.x - ((p3.x - p1.x) / 6) * tension, 10, width - 10);
             const cp2y = clamp(p2.y - ((p3.y - p1.y) / 6) * tension, 10, height - 10);
 
-            parts.push(`C ${cp1x} ${cp1y} ${cp2x} ${cp2y} ${p2.x} ${p2.y}`);
+            parts.push('C ' + cp1x + ' ' + cp1y + ' ' + cp2x + ' ' + cp2y + ' ' + p2.x + ' ' + p2.y);
         }
 
         return parts.join(' ');
@@ -100,6 +237,11 @@
         let pathLength = 0;
         let rafId = 0;
         let tween = null;
+        const items = function () {
+            return Array.from(timeline.querySelectorAll('.timeline-item'));
+        };
+        let iconThresholds = [];
+        let listInstance = items();
 
         function applyStroke(progress) {
             if (!pathLength) {
@@ -111,8 +253,43 @@
             path.style.strokeDashoffset = String(pathLength * (1 - p));
         }
 
+        function resetItemDrawState(its) {
+            its.forEach(function (el) {
+                delete el.dataset.iconRevealed;
+                const svg = el.querySelector('.timeline-draw-svg');
+                if (svg) {
+                    const segs = svg.querySelectorAll(STROKE_ELS);
+                    if (window.gsap) {
+                        window.gsap.killTweensOf(segs);
+                    }
+                    prepareDashesInSvg(svg);
+                }
+            });
+        }
+
+        function syncIcons(progress, isLayoutSync) {
+            if (!pathLength || !listInstance.length) {
+                return;
+            }
+            const drawn = pathLength * clamp(progress, 0, 1);
+            const useInstant = isLayoutSync || prefersReduced;
+            for (let i = 0; i < listInstance.length; i += 1) {
+                if (iconThresholds[i] === undefined) {
+                    return;
+                }
+                if (drawn + 0.4 < iconThresholds[i]) {
+                    continue;
+                }
+                if (listInstance[i].dataset.iconRevealed) {
+                    continue;
+                }
+                listInstance[i].dataset.iconRevealed = '1';
+                playIconForItem(listInstance[i], useInstant);
+            }
+        }
+
         function destroyTween() {
-            if (tween?.scrollTrigger) {
+            if (tween && tween.scrollTrigger) {
                 tween.scrollTrigger.kill();
             }
             if (tween) {
@@ -125,11 +302,13 @@
             if (prefersReduced) {
                 state.progress = 1;
                 applyStroke(1);
+                syncIcons(1, true);
                 return;
             }
 
             state.progress = getTimelineProgress(timeline);
             applyStroke(state.progress);
+            syncIcons(state.progress, false);
         }
 
         function setupAnimation() {
@@ -151,53 +330,65 @@
                     immediateRender: false,
                     onUpdate: function () {
                         applyStroke(state.progress);
+                        syncIcons(state.progress, false);
                     },
                     scrollTrigger: {
                         trigger: timeline,
-                        start: 'top 62%',
-                        end: 'bottom 18%',
+                        start: 'top 56%',
+                        end: 'bottom 32%',
                         scrub: 0.35,
                         invalidateOnRefresh: true,
                     },
                 });
 
-                applyStroke(tween.scrollTrigger ? tween.scrollTrigger.progress : 0);
                 window.ScrollTrigger.refresh();
                 return;
             }
-
-            syncFallbackProgress();
         }
 
         function updatePath() {
             const width = Math.max(1, Math.round(timeline.offsetWidth));
             const height = Math.max(1, Math.round(timeline.offsetHeight));
-            const items = Array.from(timeline.querySelectorAll('.timeline-item'));
+            listInstance = items();
 
             svg.setAttribute('width', String(width));
             svg.setAttribute('height', String(height));
-            svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+            svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
 
-            if (items.length < 2) {
+            if (listInstance.length < 2) {
                 path.setAttribute('d', '');
                 pathLength = 0;
+                iconThresholds = [];
                 destroyTween();
                 return;
             }
 
             const timelineRect = timeline.getBoundingClientRect();
-            const d = buildSchedulePath(items, timelineRect, width, height);
+            const d = buildSchedulePath(listInstance, timelineRect, width, height);
             path.setAttribute('d', d);
 
             const length = path.getTotalLength();
             if (!Number.isFinite(length) || length <= 0) {
                 pathLength = 0;
+                iconThresholds = [];
                 destroyTween();
                 return;
             }
 
             pathLength = length;
+            iconThresholds = computeItemThresholds(path, listInstance, timelineRect);
+            resetItemDrawState(listInstance);
+
             setupAnimation();
+            if (prefersReduced) {
+                state.progress = 1;
+            } else if (tween && tween.scrollTrigger) {
+                state.progress = tween.scrollTrigger.progress;
+            } else {
+                state.progress = getTimelineProgress(timeline);
+            }
+            applyStroke(state.progress);
+            syncIcons(state.progress, true);
         }
 
         function onScroll() {
@@ -219,7 +410,7 @@
         });
 
         resizeObserver.observe(timeline);
-        timeline.querySelectorAll('.timeline-item').forEach(function (item) {
+        listInstance.forEach(function (item) {
             resizeObserver.observe(item);
         });
 
