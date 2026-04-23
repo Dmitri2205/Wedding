@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приглашение на свадьбу</title>
+    <!-- Мета теги для SEO и шаринга -->
+    <meta name="description" content="Приглашаем вас на нашу свадьбу! Даты, место и полезные подробности.">
+    <!-- Подключение шрифтов -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Viaoda+Libre&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+    <!-- Фоновый слой -->
+    <div class="background-container">
+        <div class="bg-image"></div>
+        <div class="bg-overlay"></div>
+    </div>
+
+    <main class="content">
+        <!-- Главный экран -->
+        <section class="hero glass-panel fade-in">
+            <div class="hero-content">
+                <p class="pre-title">Мы женимся!</p>
+                <div class="hero-info">
+                    <p class="date">19.07.2026</p>
+                </div>
+                <div class="hero-photo-wrap">
+                    <img src="assets/Mask group.png" alt="Дмитрий и Эльвина" class="hero-photo">
+                    <div class="countdown-wrapper">
+                        <div id="countdown" class="countdown">Загрузка...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <span>вниз</span>
+                <div class="arrow"></div>
+            </div>
+        </section>
+
+        <!-- Родные и друзья -->
+        <section class="relatives glass-panel fade-in" id="relatives">
+            <h2>Родные и друзья!</h2>
+            <p>
+                Всем привет!
+                Совсем скоро в нашей жизни наступит важный и трогательный момент - наша свадьба.
+                <br>
+                Мы будем счастливы разделить с вами самые радостные мгновения этого дня!
+            </p>
+            <div class="relatives-divider">
+                <span class="relatives-divider-ornament" aria-hidden="true">∞</span>
+            </div>
+            <p class="relatives-names">Дима &amp; Эльвина</p>
+        </section>
+
+        <!-- Расписание -->
+        <section class="schedule glass-panel fade-in" id="schedule">
+            <h2>Расписание дня</h2>
+            <div class="timeline">
+                <svg class="timeline-path-svg" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="timeline-path-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="rgba(232, 197, 71, 0.95)" />
+                            <stop offset="50%" stop-color="rgba(212, 175, 55, 0.75)" />
+                            <stop offset="100%" stop-color="rgba(232, 197, 71, 0.9)" />
+                        </linearGradient>
+                    </defs>
+                    <path class="timeline-path-line" fill="none" stroke="url(#timeline-path-gradient)"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+                </svg>
+                <div class="timeline-item">
+                    <div class="time">14:00</div>
+                    <div class="desc">
+                        Сбор гостей и фуршет
+                        <br>
+                        <span class="timeline-item-desc">встречаемся, обнимаемся</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">15:00</div>
+                    <div class="desc">
+                        Выездная регистраця
+                        <br>
+                        <span class="timeline-item-desc">готовим платочки</span>
+                    </div>
+
+                </div>
+                <div class="timeline-item">
+                    <div class="time">16:00</div>
+                    <div class="desc">
+                        Свадебный ужин
+                        <br>
+                        <span class="timeline-item-desc">весеимся и танцуем</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">21:00</div>
+                    <div class="desc">
+                        Вкусный торт
+                        <br>
+                        <span class="timeline-item-desc">не забудьте оставить под него место</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">22:00</div>
+                    <div class="desc">
+                        Завершение вечера
+                        <br>
+                        <span class="timeline-item-desc">поздравляем и прощаемся</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Локация и маршрут -->
+        <section class="location glass-panel fade-in" id="location">
+            <h2>Локация</h2>
+            <p class="address">Лесная поляна, ул. Природная 1, Загородный клуб «Хвоя»</p>
+            <p class="hint">Координаты будут добавлены позже. Нажмите кнопку, чтобы построить маршрут в приложении.</p>
+
+            <!-- Контейнер для интерактивной карты -->
+            <div id="map" class="map-container"></div>
+
+            <button class="btn btn-primary" id="openMapModalBtn">Открыть маршрут</button>
+        </section>
+
+        <!-- Пожелания -->
+        <section class="wishes glass-panel fade-in" id="wishes">
+            <h2>Пожелания</h2>
+            <div class="wishes-palette">
+                <div class="wish-swatch" style="background: #7c3aed;"></div>
+                <div class="wish-swatch" style="background: #f97316;"></div>
+                <div class="wish-swatch" style="background: #16a34a;"></div>
+                <div class="wish-swatch" style="background: #d1c9c0;"></div>
+            </div>
+            <div class="wishes-content">
+                <div class="info-block">
+                    <h3>Дресс-код</h3>
+                    <p>У нас нет строгого дресс-кода, но мы будем рады, если вы оденетесь нарядно. Свадьба пройдёт на
+                        природе — позаботьтесь об удобной обуви.</p>
+                </div>
+                <div class="info-block">
+                    <h3>Цветы</h3>
+                    <p>Пожалуйста, воздержитесь от дарения живых цветов в пользу бутылочки хорошего вина или
+                        сертификата. Спасибо!</p>
+                </div>
+                <div class="info-block">
+                    <h3>Подарки</h3>
+                    <p>Мы будем рады любому знаку внимания. Если хотите сделать денежный подарок — свяжитесь с
+                        организатором.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Контакты -->
+        <section class="contacts glass-panel fade-in" id="contacts">
+            <h2>Контакты для связи</h2>
+            <div class="contacts-list">
+                <div class="contact-item">
+                    <span class="contact-role">Организатор</span>
+                    <span class="contact-name">Анна</span>
+                    <a href="tel:+79991234567" class="link contact-phone">+7 (999) 123-45-67</a>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-role">Дима</span>
+                    <a href="tel:+79990000001" class="link contact-phone">+7 (999) 000-00-01</a>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-role">Эльвина</span>
+                    <a href="tel:+79990000002" class="link contact-phone">+7 (999) 000-00-02</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Форма подтверждения (RSVP) -->
+        <section class="rsvp glass-panel fade-in" id="rsvp">
+            <h2>Анкета гостя</h2>
+            <p>Пожалуйста, подтвердите своё присутствие и выберите предпочтения по напиткам до 17 апреля 2026 года.</p>
+
+            <form id="rsvpForm" class="rsvp-form">
+                <div class="form-group">
+                    <label for="guestName">Ваши имя и фамилия</label>
+                    <input type="text" id="guestName" name="guestName" placeholder="Иван Иванов" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Сможете ли вы присутствовать?</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="attendance" value="Да, с удовольствием" checked>
+                            <span class="custom-radio"></span>
+                            Да, с удовольствием
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="attendance" value="К сожалению, не смогу">
+                            <span class="custom-radio"></span>
+                            К сожалению, не смогу
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group" id="plusOneGroup">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="plusOne" name="plusOne">
+                        <span class="custom-checkbox"></span>
+                        Буду не один(а)
+                    </label>
+                </div>
+
+                <div class="form-group" id="companionGroup" style="display: none;">
+                    <label for="companionName">Имя(имена) спутников</label>
+                    <input type="text" id="companionName" name="companionName" placeholder="Мария Иванова">
+                </div>
+
+                <div class="form-group" id="drinksGroup">
+                    <label>Что вы предпочитаете из напитков?</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="drinks" value="Шампанское">
+                            <span class="custom-checkbox"></span>
+                            Шампанское
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="drinks" value="Вино">
+                            <span class="custom-checkbox"></span>
+                            Вино
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="drinks" value="Крепкий алкоголь">
+                            <span class="custom-checkbox"></span>
+                            Крепкий алкоголь
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="drinks" value="Безалкогольные напитки">
+                            <span class="custom-checkbox"></span>
+                            Безалкогольные напитки
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="drinks" value="Вообще не буду пить">
+                            <span class="custom-checkbox"></span>
+                            Вообще не буду пить
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100" id="submitBtn">Отправить ответ</button>
+            </form>
+
+            <div class="rsvp-closing">
+                <p>Мы вас очень ждём!</p>
+                <p class="rsvp-closing-names">Дима + Эльвина</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Модальное окно карт -->
+    <div class="modal-overlay" id="mapModal">
+        <div class="modal glass-panel">
+            <button class="close-btn" id="closeMapModalBtn">&times;</button>
+            <h3>Открыть с помощью:</h3>
+            <div class="map-links">
+                <a href="#" class="btn btn-nav" data-app="yandex-navi">Яндекс.Навигатор</a>
+                <a href="#" class="btn btn-nav" data-app="yandex-maps">Яндекс.Карты</a>
+                <a href="#" class="btn btn-nav" data-app="2gis">2GIS</a>
+                <a href="#" class="btn btn-nav" data-app="google">Google Maps</a>
+                <a href="#" class="btn btn-nav" data-app="apple">Apple Maps</a>
+            </div>
+            <p class="modal-hint">Выберите установленное у вас приложение</p>
+        </div>
+    </div>
+
+    <!-- Скрипт Яндекс Карт (API v2.1) -->
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=YOUR_API_KEY_HERE" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js" defer></script>
+    <script src="../src/js/main.js?v=7"></script>
+    <script src="../src/js/timeline.js?v=2"></script>
+</body>
+
+</html>
