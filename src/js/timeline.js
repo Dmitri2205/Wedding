@@ -1,5 +1,9 @@
 (function () {
     const STROKE_ELS = 'path, line, polyline, polygon, circle, ellipse, rect';
+    /** На сколько «раньше» по длине пути (px) запускать отрисовку иконки относительно точки у .desc */
+    const ICON_REVEAL_LEAD_PX = 72;
+    /** Первая иконка — только после старта отрисовки линии (тот же progress, что и stroke таймлайна) */
+    const LINE_STROKE_START_EPS = 1e-5;
 
     function clamp(value, min, max) {
         return Math.min(max, Math.max(min, value));
@@ -93,7 +97,7 @@
         return t;
     }
 
-    // Как в infinitely-drawing-icons: ~500ms, stagger i*15ms, ease out quad → power2.out
+    // ~1.2s на сегмент, stagger ~36ms (масштаб от исходных 0.5s / 15ms)
     function runDrawAnimation(paths) {
         if (!paths || !paths.length) {
             return;
@@ -102,15 +106,15 @@
             window.gsap.killTweensOf(paths);
             window.gsap.to(paths, {
                 strokeDashoffset: 0,
-                duration: 0.5,
-                stagger: 0.015,
+                duration: 1.2,
+                stagger: 0.036,
                 ease: 'power2.out',
             });
         } else {
             paths.forEach(function (p, i) {
                 window.setTimeout(function () {
                     p.style.strokeDashoffset = '0';
-                }, i * 15);
+                }, i * 36);
             });
         }
     }
@@ -129,7 +133,29 @@
         });
     }
 
-    function playIconForItem(item, preferInstant) {
+    function isFirstTimelineItem(item) {
+        const timeline = document.querySelector('.timeline');
+        return Boolean(timeline && timeline.querySelector('.timeline-item') === item);
+    }
+
+    function setFirstIconDrawVisible(item, visible) {
+        if (!isFirstTimelineItem(item)) {
+            return;
+        }
+        const draw = item.querySelector('.timeline-item-draw');
+        if (!draw) {
+            return;
+        }
+        if (visible) {
+            draw.style.opacity = '1';
+            draw.style.visibility = 'visible';
+        } else {
+            draw.style.opacity = '0';
+            draw.style.visibility = 'hidden';
+        }
+    }
+
+    function playIconForItem(item, preferInstant, reduceMotion) {
         const svg = item.querySelector('.timeline-draw-svg');
         if (!svg) {
             return;
@@ -140,7 +166,14 @@
         if (!paths.length) {
             return;
         }
-        if (preferInstant) {
+        setFirstIconDrawVisible(item, true);
+        // После updatePath() syncIcons(..., true) выставлял preferInstant — первая иконка
+        // сразу показывалась целиком. Первую всегда «дорисовываем» анимацией (кроме a11y).
+        const useStrokeAnimation = reduceMotion
+            ? false
+            : (!preferInstant || isFirstTimelineItem(item));
+
+        if (!useStrokeAnimation) {
             if (window.gsap) {
                 window.gsap.killTweensOf(paths);
             }
@@ -254,8 +287,11 @@
         }
 
         function resetItemDrawState(its) {
-            its.forEach(function (el) {
+            its.forEach(function (el, index) {
                 delete el.dataset.iconRevealed;
+                if (index === 0 && !prefersReduced) {
+                    setFirstIconDrawVisible(el, false);
+                }
                 const svg = el.querySelector('.timeline-draw-svg');
                 if (svg) {
                     const segs = svg.querySelectorAll(STROKE_ELS);
@@ -277,14 +313,18 @@
                 if (iconThresholds[i] === undefined) {
                     return;
                 }
-                if (drawn + 0.4 < iconThresholds[i]) {
+                if (i === 0 && !prefersReduced && progress <= LINE_STROKE_START_EPS) {
+                    continue;
+                }
+                const revealAt = Math.max(0, iconThresholds[i] - ICON_REVEAL_LEAD_PX);
+                if (drawn + 0.4 < revealAt) {
                     continue;
                 }
                 if (listInstance[i].dataset.iconRevealed) {
                     continue;
                 }
                 listInstance[i].dataset.iconRevealed = '1';
-                playIconForItem(listInstance[i], useInstant);
+                playIconForItem(listInstance[i], useInstant, prefersReduced);
             }
         }
 

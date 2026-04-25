@@ -218,7 +218,6 @@ p {
         .countdown {
             font-family: var(--font-anonymous);
             font-size: 1.2rem;
-            font-weight: 400;
             color: #f5f5f5;
             letter-spacing: 0.02em;
             background: transparent;
@@ -231,8 +230,10 @@ p {
             max-width: 100%;
             line-height: 1.5;
             box-shadow: none;
-
+            font-weight: 400;
+            
             .countdown-label {
+                font-weight: bold;
                 color: var(--color-gold-bright);
                 font-family: var(--font-viaoda);
                 font-size: 1.5rem;
@@ -412,6 +413,19 @@ p {
             align-items: center;
             justify-content: center;
             pointer-events: none;
+        }
+
+        /* Первая иконка не до старта progress линии (JS снимает скрытие с reveal) */
+        > .timeline-item:first-of-type .timeline-item-draw {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            > .timeline-item:first-of-type .timeline-item-draw {
+                opacity: 1;
+                visibility: visible;
+            }
         }
 
         .timeline-draw-svg {
