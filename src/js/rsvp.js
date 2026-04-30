@@ -35,8 +35,36 @@
             return;
         }
 
+        const animateChoice = function (inputEl) {
+            if (!inputEl) {
+                return;
+            }
+            const label = inputEl.closest('.radio-label, .checkbox-label');
+            if (!label) {
+                return;
+            }
+            label.classList.add('is-selected');
+            if (w.gsap) {
+                w.gsap.fromTo(
+                    label,
+                    { scale: 0.97 },
+                    {
+                        scale: 1,
+                        duration: 0.2,
+                        ease: 'power2.out',
+                        clearProps: 'transform'
+                    }
+                );
+                return;
+            }
+            w.setTimeout(function () {
+                label.classList.remove('is-selected');
+            }, 200);
+        };
+
         attendanceRadios.forEach(function (radio) {
             radio.addEventListener('change', function (e) {
+                animateChoice(e.target);
                 if (e.target.value.indexOf('не смогу') !== -1) {
                     drinksGroup.style.display = 'none';
                     plusOneGroup.style.display = 'none';
@@ -50,6 +78,7 @@
         });
 
         plusOneCheckbox.addEventListener('change', function (e) {
+            animateChoice(e.target);
             if (e.target.checked) {
                 companionGroup.style.display = 'block';
             } else {
@@ -70,6 +99,7 @@
         if (drinkNone && drinkCheckboxes.length) {
             drinkCheckboxes.forEach(function (input) {
                 input.addEventListener('change', function () {
+                    animateChoice(input);
                     if (input === drinkNone) {
                         if (drinkNone.checked) {
                             drinkCheckboxes.forEach(function (o) {

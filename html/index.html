@@ -27,12 +27,13 @@
         <!-- Главный экран -->
         <section class="hero glass-panel fade-in">
             <div class="hero-content">
-                <p class="pre-title">Мы женимся!</p>
+                <h1>Мы женимся!</h1>
                 <div class="hero-info">
                     <p class="date">19 июля 2026</p>
                 </div>
                 <div class="hero-photo-wrap">
                     <img src="assets/Mask group.png" alt="Дмитрий и Эльвина" class="hero-photo">
+                    <!-- <p class="hero-photo-text">Дмитрий + Эльвина</p> -->
                     <div class="countdown-wrapper">
                         <div id="countdown" class="countdown">Загрузка...</div>
                     </div>
@@ -56,7 +57,7 @@
             <div class="relatives-divider">
                 <span class="relatives-divider-ornament" aria-hidden="true">♥</span>
             </div>
-            <p class="relatives-names">Дима &amp; Эльвина</p>
+            <p class="relatives-names">Дмитрий &amp; Эльвина</p>
         </section>
 
         <!-- Расписание -->
@@ -77,7 +78,7 @@
                 <div class="timeline-item">
                     <div class="timeline-item-header">
                         <div class="time">14:00</div>
-                                                                        <div class="timeline-item-draw" aria-hidden="true">
+                        <div class="timeline-item-draw" aria-hidden="true">
                         <svg class="timeline-draw-svg" preserveAspectRatio="xMidYMid meet" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
                         	 viewBox="0 0 255.826 255.826" xml:space="preserve">
                         <g>
@@ -189,9 +190,8 @@
                         </div>
                     </div>
                     <div class="desc">
-                        Сбор гостей и фуршет
-                        <br>
-                        <span class="timeline-item-desc">встречаемся, обнимаемся</span>
+                        <p>Сбор гостей и фуршет</p>
+                        <span>встречаемся, обнимаемся</span>
                     </div>
                 </div>
                 <div class="timeline-item">
@@ -279,9 +279,8 @@
                         </div>
                     </div>
                     <div class="desc">
-                        Выездная регистраця
-                        <br>
-                        <span class="timeline-item-desc">готовим платочки</span>
+                        <p>Выездная регистраця</p>
+                        <span>готовим платочки</span>
                     </div>
 
                 </div>
@@ -346,9 +345,8 @@
                         </div>
                     </div>
                     <div class="desc">
-                        Свадебный ужин
-                        <br>
-                        <span class="timeline-item-desc">весеимся и танцуем</span>
+                        <p>Свадебный ужин</p>
+                        <span>весеимся и танцуем</span>
                     </div>
                 </div>
                 <div class="timeline-item">
@@ -449,9 +447,12 @@
                         </div>
                     </div>
                     <div class="desc">
-                        Вкусный торт
-                        <br>
-                        <span class="timeline-item-desc">не забудьте оставить под него место</span>
+                        <p>Вкусный торт</p>
+                        <span>
+                            не забудьте оставить
+                            <br>
+                            под него место
+                        </span>
                     </div>
                 </div>
                 <div class="timeline-item">
@@ -477,9 +478,8 @@
                         </div>
                     </div>
                     <div class="desc">
-                        Завершение вечера
-                        <br>
-                        <span class="timeline-item-desc">поздравляем и прощаемся</span>
+                        <p>Завершение вечера</p>
+                        <span>поздравляем и прощаемся</span>
                     </div>
                 </div>
             </div>
@@ -488,8 +488,8 @@
         <!-- Локация и маршрут -->
         <section class="location glass-panel fade-in" id="location">
             <h2>Локация</h2>
-            <p class="address">Лесная поляна, ул. Природная 1, Загородный клуб «Хвоя»</p>
-            <p class="hint">Координаты будут добавлены позже. Нажмите кнопку, чтобы построить маршрут в приложении.</p>
+            <p class="address">Оранжерея “ЛЁД”</p>
+            <p class="hint">Точный адрес будет добавлен позже</p>
 
             <!-- Контейнер для интерактивной карты -->
             <div id="map" class="map-container"></div>
@@ -650,14 +650,22 @@
         </div>
     </div>
 
+    <button class="sound-toggle-btn" id="soundToggleBtn" type="button" aria-label="Включить звуки леса" aria-pressed="false">🔈</button>
+    <audio id="forestAmbience" preload="none">
+        <source src="assets/forest-ambience.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js" defer></script>
     <script src="../src/js/parallax-fade.js" defer></script>
+    <script src="../src/js/scroll-reveal.js" defer></script>
     <script src="../src/js/countdown.js" defer></script>
-    <script src="../src/js/rsvp.js" async></script>
-    <script src="../src/js/map.js" async></script>
+    <script src="../src/js/rsvp.js" defer></script>
+    <script src="../src/js/contacts-slider.js" defer></script>
+    <script src="../src/js/audio-ambience.js" defer></script>
+    <script src="../src/js/map.js" defer></script>
+    <script src="../src/js/timeline.js" defer></script>
     <script src="../src/js/main.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js" async></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js" async></script>
-    <script src="../src/js/timeline.js" async></script>
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 </body>
 
