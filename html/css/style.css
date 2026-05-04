@@ -19,6 +19,8 @@
   --glass-shadow: 0 8px 40px 0 rgba(0, 0, 0, 0.45);
   --focus-ring: rgba(212, 175, 55, 0.45);
   --font-viaoda: 'Viaoda Libre', cursive;
+  --font-main: 'Anonymous Pro', monospace;
+  --font-heading: 'Viaoda Libre', cursive;
   --font-anonymous: 'Anonymous Pro', monospace;
 }
 * {
@@ -93,19 +95,19 @@ h6 {
   font-family: var(--font-viaoda);
   font-weight: 600;
   margin-bottom: 1.5rem;
-  color: var(--color-gold-bright);
+  color: darkviolet;
   text-shadow: 0 1px 16px rgba(212, 175, 55, 0.15);
 }
 h1 {
   font-size: 48px;
-  color: var(--color-purple);
+  color: darkviolet;
   margin-bottom: 0;
 }
 h2 {
-  font-size: 44px;
-  color: var(--color-purple);
+  font-size: 2.625rem;
+  color: darkviolet;
   background: none;
-  -webkit-text-fill-color: var(--color-purple);
+  -webkit-text-fill-color: darkviolet;
   border-bottom: 1px solid rgba(212, 175, 55, 0.25);
   padding-bottom: 1rem;
   margin-bottom: 2rem;
@@ -214,7 +216,7 @@ p {
   font-weight: bold;
   color: var(--color-gold-bright);
   font-family: var(--font-viaoda);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   letter-spacing: 0.04em;
   display: block;
   margin-bottom: 0.2rem;
@@ -276,6 +278,9 @@ p {
   margin-bottom: 0 !important;
   background: none;
 }
+.schedule.glass-panel {
+  padding-top: 1rem;
+}
 .schedule .timeline {
   position: relative;
   display: flex;
@@ -336,7 +341,7 @@ p {
 }
 .schedule .timeline .timeline-item-header .time {
   font-family: var(--font-viaoda);
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: 600;
   letter-spacing: 2px;
   color: var(--color-gold-bright);
@@ -436,6 +441,9 @@ p {
   justify-content: center;
   gap: 1rem;
 }
+.wishes .wishes-palette .wish-swatch:first-child {
+  background: darkviolet !important;
+}
 .wishes .wish-swatch {
   width: 42px;
   height: 42px;
@@ -455,12 +463,15 @@ p {
 }
 .wishes .info-block h3 {
   font-family: var(--font-heading);
-  font-size: 20px;
-  color: var(--color-gold);
+  font-size: 1.5rem;
+  color: darkviolet;
   margin-bottom: 0.5rem;
   text-shadow: 0 0 16px rgba(212, 175, 55, 0.12);
   background: none;
-  -webkit-text-fill-color: var(--color-gold);
+  -webkit-text-fill-color: darkviolet;
+}
+.wishes .info-block p {
+  font-size: 1.25rem;
 }
 .contacts .contacts-list {
   display: flex;
@@ -523,6 +534,9 @@ p {
   background: linear-gradient(90deg, var(--color-gold), var(--color-purple));
   transition: width 0.2s ease;
 }
+.rsvp > p {
+  font-size: 1.25rem;
+}
 .rsvp .rsvp-form {
   position: relative;
   display: flex;
@@ -574,7 +588,8 @@ p {
 .rsvp .rsvp-form .form-group label {
   font-weight: 500;
   color: var(--color-text);
-  font-size: 1.1rem;
+  font-family: var(--font-viaoda);
+  font-size: 1.25rem;
 }
 .rsvp .rsvp-form input[type="text"] {
   width: 100%;
@@ -610,6 +625,7 @@ p {
   gap: 0.8rem;
   cursor: pointer;
   font-weight: 300 !important;
+  font-family: var(--font-viaoda);
   font-size: 1rem !important;
   color: var(--color-text);
   transition: transform 0.1s ease, filter 0.2s ease;
