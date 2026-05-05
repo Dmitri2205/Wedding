@@ -20,7 +20,8 @@
     --color-orange-deep: #c76b1e;
     --color-green: #16a34a;
     --color-green-light: #4ade80;
-    --color-purple: #aa00d4;
+    // --color-purple: #aa00d4;
+    --color-purple: darkorchid;
     --color-purple-bright: #7c3aed;
     --color-purple-soft: #9e77ad;
 
@@ -129,21 +130,21 @@ h6 {
     font-family: var(--font-viaoda);
     font-weight: 600;
     margin-bottom: 1.5rem;
-    color: darkviolet;
+    color: var(--color-purple);
     text-shadow: 0 1px 16px rgba(212, 175, 55, 0.15);
 }
 
 h1 {
     font-size: 48px;
-    color: darkviolet;
+    color: var(--color-purple);
     margin-bottom: 0;
 }
 
 h2 {
     font-size: 2.625rem;
-    color: darkviolet;
+    color: var(--color-purple);
     background: none;
-    -webkit-text-fill-color: darkviolet;
+    -webkit-text-fill-color: var(--color-purple);
     border-bottom: 1px solid rgba(212, 175, 55, 0.25);
     padding-bottom: 1rem;
     margin-bottom: 2rem;
@@ -181,7 +182,6 @@ p {
     flex-direction: column;
     justify-content: center;
     position: relative;
-    margin-top: 2rem;
 
     .hero-content {
         display: flex;
@@ -263,10 +263,10 @@ p {
             font-weight: 400;
             
             .countdown-label {
-                font-weight: bold;
+                font-weight: 500;
                 color: var(--color-gold-bright);
                 font-family: var(--font-viaoda);
-                font-size: 1.25rem;
+                font-size: 1.75rem;
                 letter-spacing: 0.04em;
                 display: block;
                 margin-bottom: 0.2rem;
@@ -343,10 +343,6 @@ p {
 
 // Расписание: первый ребёнок .timeline — svg, затем .timeline-item (nth сдвинут)
 .schedule {
-    &.glass-panel {
-        padding-top: 1rem;
-    }
-
     .timeline {
         position: relative;
         display: flex;
@@ -543,9 +539,10 @@ p {
         display: flex;
         justify-content: center;
         gap: 1rem;
+        margin-bottom: 1rem;
 
         .wish-swatch:first-child {
-            background: darkviolet !important;
+            background: var(--color-purple) !important;
         }
     }
 
@@ -563,20 +560,22 @@ p {
     }
 
     .info-block {
-        margin-bottom: 1.8rem;
 
         &:last-child {
             margin-bottom: 0;
+            p{
+                margin-bottom: 0;
+            }
         }
 
         h3 {
             font-family: var(--font-heading);
             font-size: 1.5rem;
-            color: darkviolet;
+            color: var(--color-purple);
             margin-bottom: 0.5rem;
             text-shadow: 0 0 16px rgba(212, 175, 55, 0.12);
             background: none;
-            -webkit-text-fill-color: darkviolet;
+            -webkit-text-fill-color: var(--color-purple);
         }
 
         p {
@@ -626,7 +625,7 @@ p {
     .contact-role {
         font-weight: 500;
         color: var(--color-gold-bright);
-        font-size: 0.95rem;
+        font-size: 1.25rem;
         min-width: 80px;
     }
 
@@ -637,6 +636,7 @@ p {
 
     .contact-phone {
         font-weight: 500;
+        color: white;
     }
 
     .contacts-progress {
@@ -671,6 +671,7 @@ p {
         gap: 1.5rem;
         text-align: left;
         margin-top: 2rem;
+        letter-spacing:0.5px;
 
         &__loader {
             position: absolute;
@@ -721,7 +722,7 @@ p {
                 font-weight: 500;
                 color: var(--color-text);
                 font-family: var(--font-viaoda);
-                font-size: 1.25rem;
+                font-size: 1.35rem;
             }
         }
 
@@ -764,7 +765,7 @@ p {
             cursor: pointer;
             font-weight: 300 !important;
             font-family: var(--font-viaoda);
-            font-size: 1rem !important;
+            font-size: 1.25rem !important;
             color: var(--color-text);
             transition: transform 0.1s ease, filter 0.2s ease;
 
@@ -844,7 +845,7 @@ p {
         text-align: center;
 
         p {
-            font-size: 1.1rem;
+            font-size: 1.25rem;
             color: var(--color-text-muted);
             margin-bottom: 0.3rem;
         }
@@ -1079,7 +1080,7 @@ p {
     }
 
     .glass-panel {
-        padding: 2.5rem 1.5rem;
+        padding:1.5rem;
         border-radius: 20px;
     }
 
@@ -1098,7 +1099,7 @@ p {
         gap: 2.1rem;
 
         .timeline-item .time {
-            font-size: 1.35rem;
+            font-size: 1.75rem;
         }
     }
 
