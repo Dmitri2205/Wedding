@@ -380,24 +380,23 @@ p {
             text-align: left;
         }
 
-        // В шапке: .time, .timeline-item-draw. У правой колонки — иконка слева от времени (к линии)
+        // Время остаётся у текстового блока, иконка уходит на противоположную сторону таймлайна.
         > .timeline-item:nth-child(even) .timeline-item-header {
             flex-direction: row;
-            justify-content: flex-start;
-            align-items: baseline;
+            justify-content: space-between;
+            align-items: center;
         }
 
         > .timeline-item:nth-child(odd) .timeline-item-header {
             flex-direction: row-reverse;
-            // при row-reverse main-start справа — к линии таймлайна
-            justify-content: flex-start;
-            align-items: baseline;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .timeline-item {
             display: flex;
             flex-direction: column;
-            width: 35%;
+            width: 100%;
             position: relative;
             z-index: 1;
 
@@ -407,8 +406,11 @@ p {
                 gap: 0.85rem;
                 margin-bottom: 0.35rem;
                 width: 100%;
+                min-width: 0;
+                height: 30px;
                 
                 .time {
+                    flex: 0 0 35%;
                     font-family: var(--font-viaoda);
                     font-size: 1.75rem;
                     font-weight: 600;
@@ -422,6 +424,7 @@ p {
             .desc {
                 display: flex;
                 flex-direction: column;
+                width: 35%;
                 &>p, &>span {
                     margin-bottom: 0;
                 }
@@ -433,7 +436,6 @@ p {
                 }
                 
                 &>span {
-                    width:max-content;
                     font-size: 16px;
                     font-weight: 400;
                     font-family: var(--font-anonymous);
@@ -455,6 +457,7 @@ p {
             align-items: center;
             justify-content: center;
             pointer-events: none;
+            transform: translateY(50%);
         }
 
         /* Первая иконка не до старта progress линии (JS снимает скрытие с reveal) */
@@ -1097,6 +1100,16 @@ p {
         padding: 0.5rem 0.25rem 2rem;
         min-height: 30rem;
         gap: 2.1rem;
+
+        .timeline-item {
+            .timeline-item-header .time {
+                flex-basis: 50%;
+            }
+
+            .desc {
+                width: 50%;
+            }
+        }
 
         .timeline-item .time {
             font-size: 1.75rem;

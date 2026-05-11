@@ -313,18 +313,18 @@ p {
 }
 .schedule .timeline > .timeline-item:nth-child(even) .timeline-item-header {
   flex-direction: row;
-  justify-content: flex-start;
-  align-items: baseline;
+  justify-content: space-between;
+  align-items: center;
 }
 .schedule .timeline > .timeline-item:nth-child(odd) .timeline-item-header {
   flex-direction: row-reverse;
-  justify-content: flex-start;
-  align-items: baseline;
+  justify-content: space-between;
+  align-items: center;
 }
 .schedule .timeline .timeline-item {
   display: flex;
   flex-direction: column;
-  width: 35%;
+  width: 100%;
   position: relative;
   z-index: 1;
 }
@@ -334,8 +334,11 @@ p {
   gap: 0.85rem;
   margin-bottom: 0.35rem;
   width: 100%;
+  min-width: 0;
+  height: 30px;
 }
 .schedule .timeline .timeline-item-header .time {
+  flex: 0 0 35%;
   font-family: var(--font-viaoda);
   font-size: 1.75rem;
   font-weight: 600;
@@ -347,6 +350,7 @@ p {
 .schedule .timeline .timeline-item .desc {
   display: flex;
   flex-direction: column;
+  width: 35%;
 }
 .schedule .timeline .timeline-item .desc > p,
 .schedule .timeline .timeline-item .desc > span {
@@ -359,7 +363,6 @@ p {
   color: var(--color-text);
 }
 .schedule .timeline .timeline-item .desc > span {
-  width: max-content;
   font-size: 16px;
   font-weight: 400;
   font-family: var(--font-anonymous);
@@ -375,6 +378,7 @@ p {
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  transform: translateY(50%);
 }
 .schedule .timeline > .timeline-item:first-of-type .timeline-item-draw {
   opacity: 0;
@@ -905,6 +909,12 @@ p {
     padding: 0.5rem 0.25rem 2rem;
     min-height: 30rem;
     gap: 2.1rem;
+  }
+  .schedule .timeline .timeline-item .timeline-item-header .time {
+    flex-basis: 50%;
+  }
+  .schedule .timeline .timeline-item .desc {
+    width: 50%;
   }
   .schedule .timeline .timeline-item .time {
     font-size: 1.75rem;
