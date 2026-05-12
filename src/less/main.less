@@ -41,6 +41,8 @@
     --font-main: 'Anonymous Pro', monospace;
     --font-heading: 'Viaoda Libre', cursive;
     --font-anonymous: 'Anonymous Pro', monospace;
+
+    --heading-size-reduction: 2px;
 }
 
 // --- 2. Сброс
@@ -135,13 +137,13 @@ h6 {
 }
 
 h1 {
-    font-size: 48px;
+    font-size: calc(48px - var(--heading-size-reduction));
     color: var(--color-purple);
     margin-bottom: 0;
 }
 
 h2 {
-    font-size: 2.625rem;
+    font-size: calc(2.625rem - var(--heading-size-reduction));
     color: var(--color-purple);
     background: none;
     -webkit-text-fill-color: var(--color-purple);
@@ -153,20 +155,20 @@ h2 {
 }
 
 h3 {
-    font-size: 20px;
+    font-size: calc(20px - var(--heading-size-reduction));
     text-align: center;
 }
 
 h4 {
-    font-size: 18px;
+    font-size: calc(18px - var(--heading-size-reduction));
 }
 
 h5 {
-    font-size: 16px;
+    font-size: calc(16px - var(--heading-size-reduction));
 }
 
 h6 {
-    font-size: 14px;
+    font-size: calc(14px - var(--heading-size-reduction));
 }
 
 p {
@@ -573,7 +575,7 @@ p {
 
         h3 {
             font-family: var(--font-heading);
-            font-size: 1.5rem;
+            font-size: calc(1.5rem - var(--heading-size-reduction));
             color: var(--color-purple);
             margin-bottom: 0.5rem;
             text-shadow: 0 0 16px rgba(212, 175, 55, 0.12);
@@ -1085,6 +1087,11 @@ p {
     .glass-panel {
         padding:1.5rem;
         border-radius: 20px;
+    }
+
+    h2,
+    .rsvp .rsvp-closing .rsvp-closing-names {
+        font-size: 1.9rem !important;
     }
 
     .hero .pre-title {
