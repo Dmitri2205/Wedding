@@ -3,9 +3,10 @@
   "private": true,
   "description": "Сайт приглашения — стили: LESS → html/css/style.css",
   "scripts": {
-    "build:css": "lessc src/less/main.less html/css/style.css",
+    "build:css": "lessc src/less/main.less css/style.css",
     "watch:css": "onchange \"src/less/**/*.less\" -- npm run build:css",
-    "icons:timeline": "node scripts/generate-timeline-inline-svgs.js && node scripts/apply-timeline-blocks-to-index.js"
+    "icons:timeline": "node scripts/generate-timeline-inline-svgs.js && node scripts/apply-timeline-blocks-to-index.js",
+    "obfuscate":"npx -y javascript-obfuscator src/js --output js/ --compact true --control-flow-flattening true --dead-code-injection false"
   },
   "devDependencies": {
     "less": "^4.2.0",
