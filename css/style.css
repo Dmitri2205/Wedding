@@ -367,7 +367,7 @@ p {
   font-size: 16px;
   font-weight: 400;
   font-family: var(--font-anonymous);
-  color: var(--color-text);
+  color: var(--color-text-muted);
 }
 .schedule .timeline .timeline-item-draw {
   position: relative;
