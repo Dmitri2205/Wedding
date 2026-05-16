@@ -4,6 +4,7 @@
   "description": "Сайт приглашения — стили: LESS → html/css/style.css",
   "scripts": {
     "build:css": "lessc src/less/main.less css/style.css",
+    "vercel-build": "npm run build:css && node scripts/vercel-build.js",
     "watch:css": "onchange \"src/less/**/*.less\" -- npm run build:css",
     "icons:timeline": "node scripts/generate-timeline-inline-svgs.js && node scripts/apply-timeline-blocks-to-index.js",
     "obfuscate":"npx -y javascript-obfuscator src/js --output js/ --compact true --control-flow-flattening true --dead-code-injection false"

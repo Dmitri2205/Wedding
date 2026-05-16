@@ -1,4 +1,6 @@
 {
-  "buildCommand": "npm run build:css",
-  "installCommand": "npm install"
+  "framework": null,
+  "buildCommand": "npm run vercel-build",
+  "installCommand": "npm install",
+  "outputDirectory": "public"
 }
