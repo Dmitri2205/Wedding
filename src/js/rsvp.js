@@ -185,16 +185,10 @@
             const BOT_TOKEN = '8781128784:AAECuc2oK-lHYZIuc8qsyLTgv36mG7MeCqs';
             const CHAT_ID = '-5173257192';
 
-            const telegramUrl = 'https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage';
-
-            fetch(telegramUrl, {
+            fetch('/api/rsvp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: CHAT_ID,
-                    text: message,
-                    parse_mode: 'Markdown',
-                }),
+                body: JSON.stringify({ text: message }),
             })
                 .then(function (response) {
                     if (response.ok) {
